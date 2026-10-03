@@ -96,7 +96,7 @@ export const CareerProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
       if (matchRes?.job) {
         setActiveJob(matchRes.job);
-      } else if (validJobs.length > 0) {
+      } else if (validResumes.length > 0 && validJobs.length > 0) {
         setActiveJob(validJobs[0]);
       } else {
         setActiveJob(null);

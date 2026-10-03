@@ -12,7 +12,7 @@ interface NavbarProps {
 
 export const Navbar: React.FC<NavbarProps> = ({ currentTab, setCurrentTab }) => {
   const { user, logout } = useAuth();
-  const { readinessScore, activeJob, plan, switchTier, quota } = useCareer();
+  const { readinessScore, activeJob, plan, switchTier, quota, hasResume } = useCareer();
   const isPro = plan === 'pro' || plan === 'campus';
 
   return (
@@ -38,7 +38,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentTab, setCurrentTab }) => 
           </div>
         </button>
 
-        {activeJob && (
+        {hasResume && activeJob && (
           <div
             onClick={() => setCurrentTab('jobs')}
             className="ui-chip hidden md:flex items-center space-x-2 rounded-full px-3 py-1 cursor-pointer"
@@ -79,7 +79,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentTab, setCurrentTab }) => 
         />
 
         <div
-          onClick={() => setCurrentTab('match')}
+          onClick={() => setCurrentTab(hasResume ? 'match' : 'resume')}
           className="ui-chip ui-chip--accent flex items-center space-x-2.5 rounded-xl px-3.5 py-1.5 cursor-pointer group"
         >
           <div className="flex flex-col items-end">
@@ -87,7 +87,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentTab, setCurrentTab }) => 
               Readiness
             </span>
             <span className="ui-accent-hover-text font-heading font-bold text-sm">
-              {readinessScore}%
+              {hasResume && readinessScore > 0 ? `${readinessScore}%` : 'Pending'}
             </span>
           </div>
           <div className="w-8 h-8 rounded-full bg-white border border-[#E7E7E4] flex items-center justify-center text-xs font-bold text-[#16A34A] shadow-xs">

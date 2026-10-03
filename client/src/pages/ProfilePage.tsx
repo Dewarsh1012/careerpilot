@@ -108,13 +108,13 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ setCurrentTab }) => {
   const candidateName =
     activeResume?.analysis?.candidateName && activeResume.analysis.candidateName !== 'Candidate'
       ? activeResume.analysis.candidateName
-      : user?.name || 'Professional Member';
+      : user?.name || '';
 
   const candidateEmail = activeResume?.analysis?.email || user?.email || '';
   const candidatePhone = activeResume?.analysis?.phone || user?.phone || '';
   const candidateLocation = activeResume?.analysis?.location || user?.location || '';
   const candidateRole =
-    activeResume?.analysis?.currentRole || user?.currentRole || user?.currentStatus || 'Software Engineer';
+    activeResume?.analysis?.currentRole || activeResume?.analysis?.experience?.[0]?.title || user?.targetRole || user?.currentRole || '';
   const candidateSummary = activeResume?.analysis?.summary || user?.summary || '';
 
   const experienceList =
@@ -286,12 +286,63 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ setCurrentTab }) => {
         </div>
       )}
 
-      {/* 1. HERO PROFILE CARD */}
-      <div className="bg-white border border-[#E7E7E4] rounded-2xl p-6 md:p-8 card-subtle flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative overflow-hidden">
-        <div className="flex items-start md:items-center space-x-5">
-          <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#171717] to-[#333333] text-white flex items-center justify-center font-heading font-extrabold text-2xl uppercase shadow-lg border border-black/10 shrink-0">
-            {candidateName.charAt(0) || 'P'}
+      {/* When no resume is uploaded yet: do not show any profile */}
+      {!activeResume && allResumes.length === 0 ? (
+        <div className="bg-white border border-[#E7E7E4] rounded-2xl p-8 md:p-12 text-center space-y-6 card-subtle">
+          <div className="w-16 h-16 rounded-2xl bg-blue-50 border border-blue-200 text-[#62A7FF] flex items-center justify-center mx-auto shadow-xs">
+            <UserCheck className="w-8 h-8" />
           </div>
+
+          <div className="space-y-2 max-w-lg mx-auto">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-[#62A7FF] bg-blue-50 border border-blue-200 px-2.5 py-0.5 rounded-full">
+              Dynamic Candidate Profile
+            </span>
+            <h2 className="font-heading font-extrabold text-2xl md:text-3xl text-[#171717]">
+              No Profile Generated Yet
+            </h2>
+            <p className="text-xs sm:text-sm text-[#6B6B6B] leading-relaxed">
+              Your candidate profile is generated dynamically by AI from your uploaded resume. Upload your resume or paste text to extract your verified skills, experience, and projects.
+            </p>
+          </div>
+
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+            <button
+              type="button"
+              onClick={() => fileInputRef.current?.click()}
+              disabled={uploadingResume}
+              className="px-6 py-3 bg-[#62A7FF] hover:bg-[#4B92F0] text-white text-xs font-bold rounded-xl shadow-xs flex items-center justify-center gap-2 transition-all cursor-pointer disabled:opacity-60"
+            >
+              {uploadingResume ? (
+                <>
+                  <RefreshCw className="w-4 h-4 animate-spin" />
+                  <span>Extracting Resume Telemetry...</span>
+                </>
+              ) : (
+                <>
+                  <Upload className="w-4 h-4" />
+                  <span>Upload Resume to Generate Profile</span>
+                </>
+              )}
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setCurrentTab?.('resume')}
+              className="px-5 py-3 border border-[#E7E7E4] hover:bg-[#F8F8F6] text-[#171717] text-xs font-bold rounded-xl flex items-center justify-center gap-2 transition-all cursor-pointer"
+            >
+              <FileText className="w-4 h-4 text-[#6B6B6B]" />
+              <span>Go to Resume Intelligence</span>
+            </button>
+          </div>
+        </div>
+      ) : (
+        <>
+          {/* 1. HERO PROFILE CARD */}
+          <div className="bg-white border border-[#E7E7E4] rounded-2xl p-6 md:p-8 card-subtle flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative overflow-hidden">
+            <div className="flex items-start md:items-center space-x-5">
+              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#171717] to-[#333333] text-white flex items-center justify-center font-heading font-extrabold text-2xl uppercase shadow-lg border border-black/10 shrink-0">
+                {candidateName.charAt(0) || 'P'}
+              </div>
           <div className="space-y-1">
             <div className="flex flex-wrap items-center gap-2">
               <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-[#62A7FF] bg-blue-50 border border-blue-200 px-2 py-0.5 rounded-md">
@@ -1096,6 +1147,8 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ setCurrentTab }) => {
           ))}
         </div>
       </div>
+    </>
+  )}
 
       {/* Edit Profile Modal */}
       <ProfileEditorModal

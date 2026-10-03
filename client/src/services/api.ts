@@ -54,11 +54,10 @@ export const api = {
         id: `user_${Date.now()}`,
         name: data.name,
         email: data.email,
-        currentStatus: 'Student / Fresher',
-        targetRole: 'Full Stack Developer',
-        experienceLevel: 'Fresher (0-1 yrs)',
-        interests: ['Web Development'],
-        careerReadiness: 70,
+        currentStatus: 'Candidate',
+        targetRole: '',
+        experienceLevel: '',
+        careerReadiness: 0,
         onboarded: false,
       };
       localStorage.setItem('careerpilot_user', JSON.stringify(user));
@@ -78,15 +77,14 @@ export const api = {
       }
       const stored = localStorage.getItem('careerpilot_user');
       const user: User = stored ? JSON.parse(stored) : {
-        id: 'user_default_1',
+        id: `user_${Date.now()}`,
         name: data.email.split('@')[0],
         email: data.email,
-        currentStatus: 'Student / Fresher',
-        targetRole: 'Full Stack Developer',
-        experienceLevel: 'Fresher (0-1 yrs)',
-        interests: ['Web Development', 'Cloud Systems'],
-        careerReadiness: 78,
-        onboarded: true,
+        currentStatus: 'Candidate',
+        targetRole: '',
+        experienceLevel: '',
+        careerReadiness: 0,
+        onboarded: false,
       };
       localStorage.setItem('careerpilot_user', JSON.stringify(user));
       return { user, token: 'local_token' };
@@ -139,12 +137,11 @@ export const api = {
         name,
         email,
         avatar,
-        currentStatus: 'Software Engineer',
-        targetRole: 'Full Stack Engineer',
-        experienceLevel: '1-3 yrs',
-        interests: ['Full Stack', 'Cloud & DevOps', 'Distributed Systems'],
-        careerReadiness: 82,
-        onboarded: true,
+        currentStatus: 'Candidate',
+        targetRole: '',
+        experienceLevel: '',
+        careerReadiness: 0,
+        onboarded: false,
         plan: 'pro',
       };
       localStorage.setItem('careerpilot_user', JSON.stringify(user));
