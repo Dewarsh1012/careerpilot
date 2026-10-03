@@ -1,0 +1,56 @@
+{
+  "code": {
+    "$file": "code.py"
+  },
+  "config": null,
+  "description": "LLM interview answer evaluation with optional session persist.",
+  "icon_url": null,
+  "name": "evaluate_interview",
+  "permissions": {
+    "grants": [
+      {
+        "permission_ids": [
+          "agent.execute",
+          "agent.read"
+        ],
+        "resource_name": "interview-evaluator",
+        "resource_type": "agent"
+      },
+      {
+        "permission_ids": [
+          "datastore.record.read",
+          "datastore.record.write",
+          "datastore.table.read"
+        ],
+        "resource_name": "interview_sessions",
+        "resource_type": "datastore_table"
+      },
+      {
+        "permission_ids": [
+          "datastore.record.read",
+          "datastore.table.read"
+        ],
+        "resource_name": "resumes",
+        "resource_type": "datastore_table"
+      },
+      {
+        "permission_ids": [
+          "datastore.record.read",
+          "datastore.table.read"
+        ],
+        "resource_name": "target_jobs",
+        "resource_type": "datastore_table"
+      },
+      {
+        "permission_ids": [
+          "function.execute",
+          "function.read"
+        ],
+        "resource_name": "refresh_readiness",
+        "resource_type": "function"
+      }
+    ]
+  },
+  "type": "API",
+  "visibility": "POD"
+}

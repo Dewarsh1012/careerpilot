@@ -1,0 +1,47 @@
+{
+  "code": {
+    "$file": "code.py"
+  },
+  "config": null,
+  "description": "LLM contextual interview question generation.",
+  "icon_url": null,
+  "name": "generate_interview_question",
+  "permissions": {
+    "grants": [
+      {
+        "permission_ids": [
+          "agent.execute",
+          "agent.read"
+        ],
+        "resource_name": "interview-coach",
+        "resource_type": "agent"
+      },
+      {
+        "permission_ids": [
+          "datastore.record.read",
+          "datastore.table.read"
+        ],
+        "resource_name": "job_matches",
+        "resource_type": "datastore_table"
+      },
+      {
+        "permission_ids": [
+          "datastore.record.read",
+          "datastore.table.read"
+        ],
+        "resource_name": "resumes",
+        "resource_type": "datastore_table"
+      },
+      {
+        "permission_ids": [
+          "datastore.record.read",
+          "datastore.table.read"
+        ],
+        "resource_name": "target_jobs",
+        "resource_type": "datastore_table"
+      }
+    ]
+  },
+  "type": "API",
+  "visibility": "POD"
+}

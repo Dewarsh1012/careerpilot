@@ -1,0 +1,7 @@
+{
+  "credential_mode": "SYSTEM",
+  "default_agent_name": "resume-analyst",
+  "is_enabled": true,
+  "name": "resend-resume-analyst",
+  "platform": "RESEND"
+}

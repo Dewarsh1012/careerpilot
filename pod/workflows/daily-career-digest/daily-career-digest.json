@@ -1,0 +1,44 @@
+{
+  "description": "Coach reviews active plan and suggests the next career move.",
+  "edges": [
+    {
+      "id": "e1",
+      "label": null,
+      "source": "coach",
+      "target": "end"
+    }
+  ],
+  "icon_url": null,
+  "mode": "GLOBAL",
+  "name": "daily-career-digest",
+  "nodes": [
+    {
+      "config": {
+        "agent_name": "career-coach",
+        "input_mapping": {
+          "instruction": {
+            "optional": false,
+            "type": "expression",
+            "value": "start.payload.instruction"
+          }
+        }
+      },
+      "id": "coach",
+      "label": "Daily digest",
+      "position": null,
+      "type": "AGENT"
+    },
+    {
+      "config": {},
+      "id": "end",
+      "label": "Done",
+      "position": null,
+      "type": "END"
+    }
+  ],
+  "start": {
+    "config": null,
+    "type": "MANUAL"
+  },
+  "visibility": "POD"
+}

@@ -1,0 +1,356 @@
+@import "tailwindcss";
+@import "./theme-dark.css";
+@import "./theme-mappings.css";
+
+/* App theme only — not OS prefers-color-scheme */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer base {
+  :root {
+    color-scheme: light;
+    --bg-canvas: #F8F8F6;
+    --surface: #FFFFFF;
+    --control-surface: #FFFFFF;
+    --control-hover: #F3F4F6;
+    --control-track: #D5D5D0;
+    --text-primary: #171717;
+    --text-secondary: #6B6B6B;
+    --border-subtle: #E7E7E4;
+    --line-divider: #e7e7e4;
+    --line-accent: color-mix(in srgb, var(--accent-primary) 14%, #e7e7e4);
+    --accent-primary: #62A7FF;
+    --accent-hover: #4B92F0;
+    --accent-glow: #A8D4FF;
+    --semantic-success: #16A34A;
+    --semantic-warning: #D97706;
+    --semantic-danger: #DC2626;
+    --semantic-info: #62A7FF;
+    --surface-elevated: #FFFFFF;
+    --danger-hover-bg: rgb(220 38 38 / 0.08);
+  }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: var(--bg-canvas);
+    color: var(--text-primary);
+  }
+
+  h1, h2, h3, h4, .font-heading, .font-metric {
+    font-family: 'Manrope', 'Inter', sans-serif;
+  }
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--control-track);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in srgb, var(--control-track) 70%, var(--text-secondary));
+}
+
+/* Subtle Card Glow / Shadow */
+.card-subtle {
+  background: var(--surface);
+  border: 1px solid var(--border-subtle);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.02), 0 1px 2px -1px rgba(0, 0, 0, 0.02);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card-subtle:hover {
+  box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.05);
+}
+
+.btn-accent {
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--accent-primary) 75%, #ffffff) 0%,
+    var(--accent-primary) 45%,
+    var(--accent-hover) 100%
+  );
+  box-shadow: 0 4px 14px color-mix(in srgb, var(--accent-primary) 35%, transparent);
+}
+
+.btn-accent:hover {
+  background: linear-gradient(
+    135deg,
+    var(--accent-glow) 0%,
+    var(--accent-primary) 45%,
+    var(--accent-hover) 100%
+  );
+}
+
+/* Custom Animations */
+@keyframes pulseSubtle {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.85; transform: scale(1.02); }
+}
+
+.animate-pulse-subtle {
+  animation: pulseSubtle 3s infinite ease-in-out;
+}
+
+.theme-control {
+  border: 1px solid var(--border-subtle);
+  background: var(--control-surface);
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease,
+    transform 0.1s ease;
+}
+
+.theme-control:hover {
+  background: var(--control-hover);
+  border-color: var(--control-track);
+}
+
+.theme-control:active {
+  background: var(--surface-elevated);
+  transform: scale(0.98);
+}
+
+@layer components {
+  .ui-chip {
+    background-color: var(--bg-canvas);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-primary);
+    transition:
+      background-color 0.15s ease,
+      border-color 0.15s ease,
+      color 0.15s ease,
+      transform 0.1s ease;
+  }
+
+  .ui-chip:hover {
+    background-color: var(--surface-elevated);
+    border-color: var(--control-track);
+  }
+
+  .ui-chip:active {
+    background-color: var(--control-hover);
+    transform: scale(0.99);
+  }
+
+  .ui-chip--accent:hover {
+    border-color: color-mix(in srgb, var(--accent-primary) 50%, var(--border-subtle));
+  }
+
+  .ui-chip--accent:active {
+    border-color: var(--accent-primary);
+  }
+
+  .ui-nav-btn {
+    color: var(--text-secondary);
+    transition:
+      background-color 0.15s ease,
+      color 0.15s ease,
+      transform 0.1s ease,
+      box-shadow 0.15s ease;
+  }
+
+  .ui-nav-btn:hover {
+    color: var(--text-primary);
+    background-color: var(--control-hover);
+  }
+
+  .ui-nav-btn:active {
+    background-color: var(--surface-elevated);
+    transform: scale(0.98);
+  }
+
+  .ui-nav-btn--active {
+    background-color: var(--accent-primary);
+    color: #ffffff;
+    box-shadow: 0 1px 4px color-mix(in srgb, var(--accent-primary) 35%, transparent);
+  }
+
+  .ui-nav-btn--active:hover {
+    background-color: var(--accent-hover);
+    color: #ffffff;
+  }
+
+  .ui-nav-btn--active:active {
+    filter: brightness(0.94);
+  }
+
+  .ui-icon-btn {
+    color: var(--text-secondary);
+    transition:
+      background-color 0.15s ease,
+      color 0.15s ease,
+      transform 0.1s ease;
+  }
+
+  .ui-icon-btn:hover {
+    color: var(--text-primary);
+    background-color: var(--control-hover);
+  }
+
+  .ui-icon-btn:active {
+    background-color: var(--surface-elevated);
+    transform: scale(0.96);
+  }
+
+  .ui-danger-icon {
+    color: var(--text-secondary);
+    transition:
+      background-color 0.15s ease,
+      color 0.15s ease,
+      transform 0.1s ease;
+  }
+
+  .ui-danger-icon:hover {
+    color: var(--semantic-danger);
+    background-color: var(--danger-hover-bg);
+  }
+
+  .ui-danger-icon:active {
+    background-color: color-mix(in srgb, var(--semantic-danger) 18%, transparent);
+    transform: scale(0.96);
+  }
+
+  .ui-accent-hover-text {
+    color: var(--text-primary);
+    transition: color 0.15s ease;
+  }
+
+  .group:hover .ui-accent-hover-text,
+  .ui-accent-hover-text:hover {
+    color: var(--accent-primary);
+  }
+
+  .ui-btn-primary {
+    background-color: var(--accent-primary);
+    color: #ffffff;
+    transition:
+      background-color 0.15s ease,
+      transform 0.1s ease,
+      filter 0.15s ease;
+  }
+
+  .ui-btn-primary:hover {
+    background-color: var(--accent-hover);
+  }
+
+  .ui-btn-primary:active {
+    filter: brightness(0.92);
+    transform: scale(0.98);
+  }
+
+  .ui-sidebar-promo-btn {
+    background: var(--surface-elevated);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-primary);
+    transition:
+      background-color 0.15s ease,
+      border-color 0.15s ease,
+      color 0.15s ease,
+      transform 0.1s ease;
+  }
+
+  .ui-sidebar-promo-btn:hover {
+    background: color-mix(in srgb, var(--accent-primary) 8%, var(--surface-elevated));
+    border-color: color-mix(in srgb, var(--accent-primary) 35%, var(--border-subtle));
+    color: var(--accent-primary);
+  }
+
+  .ui-sidebar-promo-btn:active {
+    background: color-mix(in srgb, var(--accent-primary) 14%, var(--control-hover));
+    transform: scale(0.98);
+  }
+
+  .ui-journey-current {
+    background: var(--accent-primary);
+    color: #ffffff;
+    border: 2px solid var(--accent-hover);
+    box-shadow:
+      0 0 0 4px color-mix(in srgb, var(--accent-primary) 22%, transparent),
+      0 2px 8px color-mix(in srgb, var(--accent-primary) 30%, transparent);
+    transform: scale(1.08);
+    transition:
+      background-color 0.15s ease,
+      border-color 0.15s ease,
+      transform 0.1s ease,
+      box-shadow 0.15s ease;
+  }
+
+  .ui-journey-current:hover {
+    background: var(--accent-hover);
+  }
+
+  .ui-journey-current:active {
+    transform: scale(1.02);
+  }
+
+  .ui-journey-future {
+    background: color-mix(in srgb, var(--accent-primary) 6%, var(--control-hover));
+    border: 2px solid color-mix(in srgb, var(--accent-primary) 18%, var(--control-track));
+    color: var(--text-secondary);
+    transition:
+      background-color 0.15s ease,
+      border-color 0.15s ease,
+      color 0.15s ease,
+      transform 0.1s ease;
+  }
+
+  .ui-journey-future:hover {
+    background: color-mix(in srgb, var(--accent-primary) 14%, var(--control-hover));
+    border-color: var(--accent-primary);
+    color: var(--accent-primary);
+  }
+
+  .ui-journey-future:active {
+    transform: scale(0.95);
+  }
+
+  .ui-journey-done {
+    background: color-mix(in srgb, var(--accent-primary) 22%, var(--surface));
+    border: 2px solid color-mix(in srgb, var(--accent-primary) 45%, var(--border-subtle));
+    color: var(--accent-primary);
+    transition:
+      background-color 0.15s ease,
+      border-color 0.15s ease,
+      color 0.15s ease,
+      transform 0.1s ease;
+  }
+
+  .ui-journey-done:hover {
+    background: var(--accent-primary);
+    border-color: var(--accent-hover);
+    color: #ffffff;
+  }
+
+  .ui-journey-done:active {
+    background: var(--accent-hover);
+    transform: scale(0.95);
+  }
+
+  .ui-journey-here {
+    color: var(--accent-primary);
+    background: color-mix(in srgb, var(--accent-primary) 10%, var(--bg-canvas));
+    border: 1px solid color-mix(in srgb, var(--accent-primary) 25%, var(--border-subtle));
+  }
+
+  .ui-pipeline-line {
+    height: 2px;
+    background: var(--line-divider);
+    border-radius: 9999px;
+  }
+
+  .ui-divider {
+    border-color: var(--line-divider);
+  }
+
+  .ui-progress-track {
+    background: var(--bg-canvas);
+    border: 1px solid var(--line-divider);
+  }
+}

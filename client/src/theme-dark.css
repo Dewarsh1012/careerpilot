@@ -1,0 +1,150 @@
+html.dark {
+  color-scheme: dark;
+  --bg-canvas: #0b1120;
+  --surface: #141c2e;
+  --control-surface: #141c2e;
+  --control-hover: #1c2740;
+  --control-track: #3d4d66;
+  --surface-elevated: #1c2740;
+  --text-primary: #e8eef7;
+  --text-secondary: #94a3b8;
+  --accent-primary: #7eb8ff;
+  --accent-hover: #62a7ff;
+  --border-subtle: color-mix(in srgb, var(--accent-primary) 16%, #243049);
+  --line-divider: color-mix(in srgb, var(--accent-primary) 42%, #1e2a42);
+  --line-accent: color-mix(in srgb, var(--accent-primary) 62%, #1a2438);
+  --danger-hover-bg: rgb(248 113 113 / 0.12);
+  --accent-glow: #4a7db8;
+  --semantic-success: #4ade80;
+  --semantic-warning: #fbbf24;
+  --semantic-danger: #f87171;
+  --semantic-info: #7eb8ff;
+}
+
+html.dark .card-subtle {
+  background: var(--surface);
+  border-color: var(--border-subtle);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.25);
+}
+
+html.dark .card-subtle:hover {
+  box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.35);
+}
+
+html.dark .bg-white,
+html.dark .bg-white\/80 {
+  background-color: var(--surface) !important;
+}
+
+html.dark .bg-\[\#F8F8F6\] {
+  background-color: var(--bg-canvas) !important;
+}
+
+html.dark .hover\:bg-\[\#F8F8F6\]:hover {
+  background-color: var(--surface-elevated) !important;
+}
+
+html.dark .hover\:bg-white:hover {
+  background-color: var(--surface-elevated) !important;
+}
+
+html.dark .text-\[\#171717\] {
+  color: var(--text-primary) !important;
+}
+
+html.dark .text-\[\#6B6B6B\] {
+  color: var(--text-secondary) !important;
+}
+
+html.dark .hover\:text-\[\#171717\]:hover {
+  color: var(--text-primary) !important;
+}
+
+html.dark .border-\[\#E7E7E4\],
+html.dark .border-\[\#D5D5D0\],
+html.dark .border-\[\#E7E7E4\]\/60,
+html.dark .divide-\[\#E7E7E4\] > :not(:last-child) {
+  border-color: var(--line-divider) !important;
+}
+
+html.dark .bg-\[\#E7E7E4\] {
+  background-color: var(--line-divider) !important;
+}
+
+html.dark .ui-pipeline-line {
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--accent-primary) 8%, transparent),
+    color-mix(in srgb, var(--accent-primary) 55%, #1e2a42) 35%,
+    color-mix(in srgb, var(--accent-primary) 70%, #1e2a42) 50%,
+    color-mix(in srgb, var(--accent-primary) 55%, #1e2a42) 65%,
+    color-mix(in srgb, var(--accent-primary) 8%, transparent)
+  );
+  box-shadow: 0 0 12px color-mix(in srgb, var(--accent-primary) 25%, transparent);
+}
+
+html.dark .ui-progress-track {
+  background: color-mix(in srgb, var(--accent-primary) 10%, var(--bg-canvas));
+  border-color: var(--line-divider);
+}
+
+html.dark .hover\:border-\[\#D5D5D0\]:hover {
+  border-color: #3d4d66 !important;
+}
+
+html.dark .from-white {
+  --tw-gradient-from: var(--surface) !important;
+}
+
+html.dark .via-white {
+  --tw-gradient-via: var(--surface) !important;
+}
+
+html.dark .bg-gradient-to-r.from-white.via-white {
+  background-image: linear-gradient(
+    to right,
+    var(--surface),
+    var(--surface),
+    rgb(126 184 255 / 0.12)
+  ) !important;
+}
+
+html.dark ::-webkit-scrollbar-thumb {
+  background: #3d4d66;
+}
+
+html.dark ::-webkit-scrollbar-thumb:hover {
+  background: #526480;
+}
+
+html.dark .hover\:text-\[\#62A7FF\]:hover,
+html.dark .group:hover .group-hover\:text-\[\#62A7FF\] {
+  color: var(--accent-primary) !important;
+}
+
+html.dark .hover\:border-\[\#62A7FF\]:hover,
+html.dark .hover\:border-\[\#62A7FF\]\/40:hover,
+html.dark .hover\:border-\[\#62A7FF\]\/30:hover {
+  border-color: color-mix(in srgb, var(--accent-primary) 45%, var(--border-subtle)) !important;
+}
+
+html.dark .hover\:bg-red-50:hover {
+  background-color: var(--danger-hover-bg) !important;
+}
+
+html.dark .hover\:text-\[\#DC2626\]:hover {
+  color: var(--semantic-danger) !important;
+}
+
+html.dark .hover\:bg-purple-100:hover {
+  background-color: rgb(88 28 135 / 0.35) !important;
+}
+
+html.dark .bg-purple-50 {
+  background-color: rgb(88 28 135 / 0.2) !important;
+}
+
+html.dark .ui-nav-btn--active .text-\[\#6B6B6B\],
+html.dark .ui-nav-btn--active .group-hover\:text-\[\#171717\] {
+  color: #ffffff !important;
+}

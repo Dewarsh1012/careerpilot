@@ -1,0 +1,19 @@
+{
+  "account_id": null,
+  "agent_name": "career-coach",
+  "config": {
+    "operations": [
+      "INSERT"
+    ],
+    "table_name": "job_applications"
+  },
+  "connector_trigger_id": null,
+  "filter_instruction": null,
+  "filter_output_schema": null,
+  "instruction": "A new job application was saved. Read the row, compare it to the active job match, and message the member a short prep checklist (3 bullets) tailored to the company and role.",
+  "is_active": true,
+  "name": "on-new-application",
+  "schedule_type": "DATASTORE",
+  "visibility": "POD",
+  "workflow_name": null
+}

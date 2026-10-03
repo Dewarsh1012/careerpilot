@@ -1,0 +1,16 @@
+{
+  "account_id": null,
+  "agent_name": null,
+  "config": {
+    "cron": "30 9 * * *"
+  },
+  "connector_trigger_id": null,
+  "filter_instruction": null,
+  "filter_output_schema": null,
+  "instruction": "Produce the member's CareerPilot daily digest: readiness score, active target job, top skill gaps, next plan task, and one interview practice suggestion.",
+  "is_active": true,
+  "name": "morning-digest",
+  "schedule_type": "TIME",
+  "visibility": "POD",
+  "workflow_name": "daily-career-digest"
+}

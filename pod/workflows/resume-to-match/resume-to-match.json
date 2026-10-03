@@ -1,0 +1,97 @@
+{
+  "description": "Run resume-to-job skill match and refresh the active career plan.",
+  "edges": [
+    {
+      "id": "e1",
+      "label": null,
+      "source": "intake",
+      "target": "match"
+    },
+    {
+      "id": "e2",
+      "label": null,
+      "source": "match",
+      "target": "refresh"
+    },
+    {
+      "id": "e3",
+      "label": null,
+      "source": "refresh",
+      "target": "end"
+    }
+  ],
+  "icon_url": null,
+  "mode": "GLOBAL",
+  "name": "resume-to-match",
+  "nodes": [
+    {
+      "config": {
+        "assignee_pod_member_id": null,
+        "assignee_pod_member_id_expression": null,
+        "input_schema": {
+          "properties": {
+            "job_id": {
+              "type": "string"
+            },
+            "resume_id": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "resume_id",
+            "job_id"
+          ],
+          "type": "object"
+        },
+        "ui_schema": null
+      },
+      "id": "intake",
+      "label": "Resume + job",
+      "position": null,
+      "type": "FORM"
+    },
+    {
+      "config": {
+        "function_name": "compute_job_match",
+        "input_mapping": {
+          "job_id": {
+            "optional": false,
+            "type": "expression",
+            "value": "intake.job_id"
+          },
+          "resume_id": {
+            "optional": false,
+            "type": "expression",
+            "value": "intake.resume_id"
+          }
+        }
+      },
+      "id": "match",
+      "label": "Compute match",
+      "position": null,
+      "type": "FUNCTION"
+    },
+    {
+      "config": {
+        "function_name": "refresh_readiness",
+        "input_mapping": {}
+      },
+      "id": "refresh",
+      "label": "Refresh readiness",
+      "position": null,
+      "type": "FUNCTION"
+    },
+    {
+      "config": {},
+      "id": "end",
+      "label": "Done",
+      "position": null,
+      "type": "END"
+    }
+  ],
+  "start": {
+    "config": null,
+    "type": "MANUAL"
+  },
+  "visibility": "POD"
+}

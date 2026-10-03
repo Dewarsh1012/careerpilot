@@ -1,0 +1,106 @@
+{
+  "agent_runtime": null,
+  "description": "CareerPilot coach \u2014 reads your profile, match, plan, and applications; suggests next steps.",
+  "icon_url": null,
+  "input_schema": null,
+  "instruction": {
+    "$file": "instruction.md"
+  },
+  "metadata": null,
+  "name": "career-coach",
+  "output_schema": null,
+  "permissions": {
+    "grants": [
+      {
+        "permission_ids": [
+          "datastore.record.read",
+          "datastore.record.write",
+          "datastore.table.read"
+        ],
+        "resource_name": "career_plans",
+        "resource_type": "datastore_table"
+      },
+      {
+        "permission_ids": [
+          "datastore.record.read",
+          "datastore.record.write",
+          "datastore.table.read"
+        ],
+        "resource_name": "career_profiles",
+        "resource_type": "datastore_table"
+      },
+      {
+        "permission_ids": [
+          "datastore.record.read",
+          "datastore.table.read"
+        ],
+        "resource_name": "interview_sessions",
+        "resource_type": "datastore_table"
+      },
+      {
+        "permission_ids": [
+          "datastore.record.read",
+          "datastore.record.write",
+          "datastore.table.read"
+        ],
+        "resource_name": "job_applications",
+        "resource_type": "datastore_table"
+      },
+      {
+        "permission_ids": [
+          "datastore.record.read",
+          "datastore.table.read"
+        ],
+        "resource_name": "job_matches",
+        "resource_type": "datastore_table"
+      },
+      {
+        "permission_ids": [
+          "datastore.record.read",
+          "datastore.table.read"
+        ],
+        "resource_name": "resumes",
+        "resource_type": "datastore_table"
+      },
+      {
+        "permission_ids": [
+          "datastore.record.read",
+          "datastore.record.write",
+          "datastore.table.read"
+        ],
+        "resource_name": "target_jobs",
+        "resource_type": "datastore_table"
+      },
+      {
+        "permission_ids": [
+          "function.execute",
+          "function.read"
+        ],
+        "resource_name": "compute_job_match",
+        "resource_type": "function"
+      },
+      {
+        "permission_ids": [
+          "function.execute",
+          "function.read"
+        ],
+        "resource_name": "refresh_readiness",
+        "resource_type": "function"
+      },
+      {
+        "permission_ids": [
+          "workflow.execute",
+          "workflow.read"
+        ],
+        "resource_name": "resume-to-match",
+        "resource_type": "workflow"
+      }
+    ]
+  },
+  "toolsets": [
+    "POD",
+    "USER_INTERACTION",
+    "MESSAGING"
+  ],
+  "visibility": "POD"
+}

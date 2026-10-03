@@ -1,0 +1,251 @@
+/**
+ * CareerPilot theme system — semantic surfaces + legacy Tailwind hex remaps in dark mode.
+ */
+
+@layer components {
+  .cp-page {
+    background-color: var(--bg-canvas);
+    color: var(--text-primary);
+  }
+
+  .cp-panel {
+    background-color: var(--surface);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-primary);
+  }
+
+  .cp-muted {
+    background-color: var(--bg-canvas);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-primary);
+  }
+
+  .cp-text {
+    color: var(--text-primary);
+  }
+
+  .cp-text-muted {
+    color: var(--text-secondary);
+  }
+
+  .cp-accent {
+    color: var(--accent-primary);
+  }
+
+  .cp-border {
+    border-color: var(--border-subtle);
+  }
+
+  .cp-input {
+    background-color: var(--control-hover);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-primary);
+    transition: border-color 0.15s ease;
+  }
+
+  .cp-input:focus {
+    border-color: var(--accent-primary);
+    outline: none;
+  }
+
+  .cp-btn-primary {
+    background-color: var(--accent-primary);
+    color: #ffffff;
+  }
+
+  .cp-btn-primary:hover {
+    background-color: var(--accent-hover);
+  }
+
+  .cp-btn-secondary {
+    background-color: var(--bg-canvas);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-primary);
+  }
+
+  .cp-btn-secondary:hover {
+    background-color: var(--surface-elevated);
+    border-color: var(--control-track);
+  }
+}
+
+/* ─── Dark: legacy arbitrary colors → CSS variables ─── */
+
+html.dark .text-\[\#62A7FF\],
+html.dark .text-\[\#4B92F0\] {
+  color: var(--accent-primary) !important;
+}
+
+html.dark .bg-\[\#62A7FF\] {
+  background-color: var(--accent-primary) !important;
+}
+
+html.dark .hover\:bg-\[\#4B92F0\]:hover,
+html.dark .hover\:bg-\[\#62A7FF\]:hover {
+  background-color: var(--accent-hover) !important;
+}
+
+html.dark .bg-\[\#62A7FF\]\/5 {
+  background-color: color-mix(in srgb, var(--accent-primary) 8%, transparent) !important;
+}
+
+html.dark .bg-\[\#62A7FF\]\/10 {
+  background-color: color-mix(in srgb, var(--accent-primary) 16%, transparent) !important;
+}
+
+html.dark .bg-\[\#62A7FF\]\/30,
+html.dark .border-\[\#62A7FF\]\/30 {
+  border-color: color-mix(in srgb, var(--accent-primary) 35%, var(--border-subtle)) !important;
+}
+
+html.dark .border-\[\#62A7FF\] {
+  border-color: var(--accent-primary) !important;
+}
+
+html.dark .border-\[\#62A7FF\]\/5 {
+  border-color: color-mix(in srgb, var(--accent-primary) 25%, var(--border-subtle)) !important;
+}
+
+html.dark .ring-\[\#62A7FF\]\/20 {
+  --tw-ring-color: color-mix(in srgb, var(--accent-primary) 35%, transparent) !important;
+}
+
+html.dark .shadow-\[\#62A7FF\]\/25,
+html.dark .shadow-\[\#62A7FF\]\/30 {
+  --tw-shadow-color: color-mix(in srgb, var(--accent-primary) 30%, transparent) !important;
+}
+
+html.dark .bg-\[\#F8F8F6\]\/50,
+html.dark .bg-\[\#F8F8F6\]\/60,
+html.dark .bg-\[\#F8F8F6\]\/80 {
+  background-color: color-mix(in srgb, var(--bg-canvas) 65%, var(--surface-elevated)) !important;
+}
+
+html.dark .hover\:bg-\[\#F8F8F6\]\/60:hover {
+  background-color: color-mix(in srgb, var(--control-hover) 80%, var(--surface)) !important;
+}
+
+html.dark .bg-\[\#171717\] {
+  background-color: color-mix(in srgb, var(--accent-primary) 22%, #0b1120) !important;
+}
+
+html.dark .hover\:bg-\[\#171717\]:hover {
+  background-color: color-mix(in srgb, var(--accent-primary) 30%, #0b1120) !important;
+}
+
+html.dark .text-\[\#16A34A\] {
+  color: var(--semantic-success) !important;
+}
+
+html.dark .bg-\[\#16A34A\] {
+  background-color: var(--semantic-success) !important;
+}
+
+html.dark .bg-\[\#16A34A\]\/10 {
+  background-color: color-mix(in srgb, var(--semantic-success) 18%, transparent) !important;
+}
+
+html.dark .bg-green-50,
+html.dark .bg-green-50\/30 {
+  background-color: color-mix(in srgb, var(--semantic-success) 12%, var(--surface)) !important;
+}
+
+html.dark .border-green-200 {
+  border-color: color-mix(in srgb, var(--semantic-success) 35%, var(--border-subtle)) !important;
+}
+
+html.dark .text-green-700,
+html.dark .text-green-800,
+html.dark .text-green-900,
+html.dark .text-green-950 {
+  color: color-mix(in srgb, var(--semantic-success) 75%, #e8eef7) !important;
+}
+
+html.dark .fill-green-100 {
+  fill: color-mix(in srgb, var(--semantic-success) 25%, var(--surface)) !important;
+}
+
+html.dark .bg-red-50 {
+  background-color: color-mix(in srgb, var(--semantic-danger) 12%, var(--surface)) !important;
+}
+
+html.dark .border-red-200 {
+  border-color: color-mix(in srgb, var(--semantic-danger) 35%, var(--border-subtle)) !important;
+}
+
+html.dark .text-red-700,
+html.dark .text-red-800 {
+  color: color-mix(in srgb, var(--semantic-danger) 80%, #fecaca) !important;
+}
+
+html.dark .bg-purple-100 {
+  background-color: rgb(88 28 135 / 0.35) !important;
+}
+
+html.dark .text-purple-800,
+html.dark .text-purple-900 {
+  color: #e9d5ff !important;
+}
+
+html.dark .border-purple-200 {
+  border-color: rgb(147 51 234 / 0.45) !important;
+}
+
+html.dark .bg-purple-900 {
+  background-color: rgb(88 28 135 / 0.85) !important;
+}
+
+html.dark .text-purple-600 {
+  color: #d8b4fe !important;
+}
+
+html.dark .hover\:text-\[\#D5D5D0\]:hover,
+html.dark .text-\[\#D5D5D0\] {
+  color: var(--control-track) !important;
+}
+
+html.dark .hover\:text-\[\#62A7FF\]:hover {
+  color: var(--accent-primary) !important;
+}
+
+html.dark .hover\:bg-\[\#E7E7E4\]:hover {
+  background-color: var(--control-hover) !important;
+}
+
+html.dark .focus\:border-\[\#62A7FF\]:focus {
+  border-color: var(--accent-primary) !important;
+}
+
+html.dark .placeholder\:text-\[\#6B6B6B\]::placeholder {
+  color: var(--text-secondary) !important;
+}
+
+html.dark .btn-accent {
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--accent-primary) 85%, #ffffff) 0%,
+    var(--accent-primary) 45%,
+    var(--accent-hover) 100%
+  );
+  box-shadow: 0 4px 14px color-mix(in srgb, var(--accent-primary) 38%, transparent);
+}
+
+html.dark .btn-accent:hover {
+  background: linear-gradient(
+    135deg,
+    var(--accent-primary) 0%,
+    var(--accent-hover) 55%,
+    color-mix(in srgb, var(--accent-hover) 90%, #0b1120) 100%
+  );
+}
+
+html.dark .shadow-xl,
+html.dark .shadow-md,
+html.dark .shadow-sm,
+html.dark .shadow-xs {
+  --tw-shadow-color: rgb(0 0 0 / 0.35);
+}
+
+html.dark .bg-\[var\(--surface\)\]\/90 {
+  background-color: color-mix(in srgb, var(--surface) 92%, transparent) !important;
+}

@@ -1,0 +1,7 @@
+{
+  "credential_mode": "SYSTEM",
+  "default_agent_name": "interview-coach",
+  "is_enabled": true,
+  "name": "resend-interview-coach",
+  "platform": "RESEND"
+}

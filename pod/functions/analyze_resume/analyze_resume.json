@@ -1,0 +1,41 @@
+{
+  "code": {
+    "$file": "code.py"
+  },
+  "config": null,
+  "description": "LLM resume analysis and optional persist to resumes table.",
+  "icon_url": null,
+  "name": "analyze_resume",
+  "permissions": {
+    "grants": [
+      {
+        "permission_ids": [
+          "agent.execute",
+          "agent.read"
+        ],
+        "resource_name": "resume-analyst",
+        "resource_type": "agent"
+      },
+      {
+        "permission_ids": [
+          "datastore.record.read",
+          "datastore.record.write",
+          "datastore.table.read"
+        ],
+        "resource_name": "career_profiles",
+        "resource_type": "datastore_table"
+      },
+      {
+        "permission_ids": [
+          "datastore.record.read",
+          "datastore.record.write",
+          "datastore.table.read"
+        ],
+        "resource_name": "resumes",
+        "resource_type": "datastore_table"
+      }
+    ]
+  },
+  "type": "API",
+  "visibility": "POD"
+}

@@ -1,0 +1,17 @@
+{
+  "contents": {
+    "with_data": true
+  },
+  "description": "CareerPilot AI Career Companion",
+  "format_version": 3,
+  "icon_url": null,
+  "name": "careerpilot",
+  "variables": {
+    "careerpilot_live_slug": {
+      "default": "careerpilot-live",
+      "description": "Public URL slug for app 'careerpilot-live' (unique platform-wide; a suffix is added on collision)",
+      "source_value": "careerpilot-live",
+      "type": "app_slug"
+    }
+  }
+}
