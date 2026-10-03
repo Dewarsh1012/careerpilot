@@ -44,10 +44,30 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     refreshUser();
   }, []);
 
+  const clearUserSessionCache = () => {
+    localStorage.removeItem('careerpilot_resumes');
+    localStorage.removeItem('careerpilot_matches');
+    localStorage.removeItem('careerpilot_plan');
+    localStorage.removeItem('careerpilot_interviews');
+    localStorage.removeItem('careerpilot_applications');
+    localStorage.removeItem('careerpilot_active_resume');
+    localStorage.removeItem('careerpilot_active_match');
+  };
+
   const login = async (email: string, password?: string) => {
     setLoading(true);
     try {
       localStorage.removeItem('careerpilot_logged_out');
+      // If logging into a different account, wipe local cache
+      const stored = localStorage.getItem('careerpilot_user');
+      if (stored) {
+        try {
+          const parsed = JSON.parse(stored);
+          if (parsed.email && parsed.email.toLowerCase() !== email.toLowerCase()) {
+            clearUserSessionCache();
+          }
+        } catch (e) {}
+      }
       const res = await api.auth.login({ email, password });
       if (res.token) {
         localStorage.setItem('careerpilot_token', res.token);
@@ -64,6 +84,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setLoading(true);
     try {
       localStorage.removeItem('careerpilot_logged_out');
+      // A brand new ID must never see any prior resume/match history
+      clearUserSessionCache();
       const res = await api.auth.register({ name, email, password });
       if (res.token) {
         localStorage.setItem('careerpilot_token', res.token);
@@ -112,6 +134,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     localStorage.removeItem('careerpilot_token');
     localStorage.removeItem('careerpilot_user');
     localStorage.setItem('careerpilot_logged_out', 'true');
+    clearUserSessionCache();
     setUser(null);
   };
 

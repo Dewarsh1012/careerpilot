@@ -531,7 +531,7 @@ export const api = {
         const res = await fetch(`${API_BASE}/resumes`, { headers: getHeaders() });
         if (res.ok) {
           const list = await res.json();
-          if (Array.isArray(list) && list.length > 0) {
+          if (Array.isArray(list)) {
             localStorage.setItem('careerpilot_resumes', JSON.stringify(list));
             return list;
           }

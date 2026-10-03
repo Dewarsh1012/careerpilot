@@ -86,13 +86,69 @@ async function listRows(table: string): Promise<Row[]> {
 
 async function getProfileRow(): Promise<Row | null> {
   const rows = await listRows('career_profiles');
+  const client = podClient();
+  let podEmail = '';
+  try {
+    const me = await client.users.current();
+    podEmail = (me.email || '').trim().toLowerCase();
+  } catch (e) {}
+
+  let localEmail = '';
+  try {
+    const raw = localStorage.getItem('careerpilot_user');
+    if (raw) {
+      const u = JSON.parse(raw);
+      localEmail = (u.email || '').trim().toLowerCase();
+    }
+  } catch (e) {}
+
+  const targetEmail = localEmail || podEmail;
+  if (targetEmail) {
+    const match = rows.find((r) => str(r.email).trim().toLowerCase() === targetEmail);
+    if (match) return match;
+    // New user with no profile yet
+    return null;
+  }
   return rows[0] ?? null;
 }
 
 async function updateProfilePatch(patch: Record<string, unknown>): Promise<void> {
+  const client = podClient();
   const profile = await getProfileRow();
-  if (!profile?.id) return;
-  await podClient().records.update('career_profiles', String(profile.id), patch);
+  if (profile?.id) {
+    await client.records.update('career_profiles', String(profile.id), patch);
+    return;
+  }
+  let email = '';
+  let name = 'CareerPilot Member';
+  try {
+    const raw = localStorage.getItem('careerpilot_user');
+    if (raw) {
+      const u = JSON.parse(raw);
+      email = u.email || '';
+      name = u.name || name;
+    }
+  } catch (e) {}
+  if (!email) {
+    try {
+      const me = await client.users.current();
+      email = me.email || '';
+      name = (me as any).first_name || me.email?.split('@')[0] || name;
+    } catch (e) {}
+  }
+  await client.records.create('career_profiles', {
+    display_name: name,
+    email,
+    current_status: 'Student / Fresher',
+    target_role: 'Full Stack Developer',
+    experience_level: 'Fresher (0-1 yrs)',
+    career_readiness: 0,
+    onboarded: true,
+    plan_tier: 'pro',
+    interests: [],
+    verified_skills: [],
+    ...patch,
+  });
 }
 
 function raceTimeout<T>(promise: Promise<T>, ms: number): Promise<T> {
@@ -372,8 +428,17 @@ export const lemmaApi = {
   },
 
   async getResumes(userId: string): Promise<ResumeRecord[]> {
+    const profile = await getProfileRow();
+    if (!profile) {
+      return [];
+    }
     const rows = await listRows('resumes');
-    return rows.map((row) => rowToResume(row, userId));
+    const matched = rows.filter((r) => {
+      if (profile.active_resume_id && str(r.id) === String(profile.active_resume_id)) return true;
+      if (r.user_id && (str(r.user_id) === String(profile.id) || str(r.user_id) === userId)) return true;
+      return false;
+    });
+    return matched.map((row) => rowToResume(row, userId));
   },
 
   async getJobs(userId: string): Promise<JobRecord[]> {
@@ -382,8 +447,17 @@ export const lemmaApi = {
   },
 
   async getActiveMatch(userId: string): Promise<{ match: MatchRecord | null; job: JobRecord | null }> {
+    const profile = await getProfileRow();
+    if (!profile || !profile.active_resume_id) {
+      return { match: null, job: null };
+    }
     const matches = await listRows('job_matches');
-    const active = matches.find((m) => m.is_active) ?? matches[0];
+    const userMatches = matches.filter(
+      (m) =>
+        (profile.active_resume_id && str(m.resume_id) === String(profile.active_resume_id)) ||
+        (m.user_id && (str(m.user_id) === String(profile.id) || str(m.user_id) === userId))
+    );
+    const active = userMatches.find((m) => m.is_active) ?? userMatches[0];
     if (!active) {
       return { match: null, job: null };
     }
@@ -394,8 +468,17 @@ export const lemmaApi = {
   },
 
   async getCareerPlan(userId: string): Promise<CareerPlanRecord | null> {
+    const profile = await getProfileRow();
+    if (!profile || !profile.active_resume_id) {
+      return null;
+    }
     const rows = await listRows('career_plans');
-    const active = rows.find((r) => r.is_active) ?? rows[0];
+    const userPlans = rows.filter(
+      (r) =>
+        (profile.active_resume_id && str(r.resume_id) === String(profile.active_resume_id)) ||
+        (r.user_id && (str(r.user_id) === String(profile.id) || str(r.user_id) === userId))
+    );
+    const active = userPlans.find((r) => r.is_active) ?? userPlans[0];
     return active ? rowToPlan(active, userId) : null;
   },
 
@@ -477,6 +560,7 @@ export const lemmaApi = {
       file_name: fileName,
       title: 'Primary resume',
       is_primary: true,
+      user_id: userId,
       extracted_text: resumeText,
       analysis,
       processing_status: 'completed',

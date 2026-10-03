@@ -15,6 +15,17 @@ import {
   Sparkles,
   Layers,
   ChevronRight,
+  UploadCloud,
+  FileText,
+  Check,
+  Mail,
+  MapPin,
+  Phone,
+  GraduationCap,
+  FolderGit2,
+  Code2,
+  Target,
+  Award,
 } from 'lucide-react';
 
 interface DashboardPageProps {
@@ -23,12 +34,14 @@ interface DashboardPageProps {
 
 export const DashboardPage: React.FC<DashboardPageProps> = ({ setCurrentTab }) => {
   const { user } = useAuth();
-  const { activeJob, activeMatch, careerPlan, readinessScore } = useCareer();
+  const { activeJob, activeMatch, careerPlan, readinessScore, activeResume } = useCareer();
 
-  const missingSkills = activeMatch?.missingSkills || [
+  const analysis = activeResume?.analysis;
+
+  const missingSkills = activeMatch?.missingSkills || (activeResume ? [
     { name: 'Docker', importance: 'High', recommendation: 'Complete containerization milestone in Phase 2' },
     { name: 'AWS Cloud', importance: 'High', recommendation: 'Deploy test microservice with S3 and EC2' },
-  ];
+  ] : []);
 
   return (
     <div className="space-y-6 text-left max-w-7xl mx-auto pb-12">
@@ -42,30 +55,313 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ setCurrentTab }) =
             <span className="w-1.5 h-1.5 rounded-full bg-[#16A34A]" />
           </div>
           <h1 className="font-heading font-extrabold text-2xl sm:text-3xl text-[#171717] tracking-tight">
-            Welcome back, {user?.name || 'Archi'}
+            Welcome back, {user?.name || analysis?.candidateName || 'Candidate'}
           </h1>
           <p className="text-xs sm:text-sm text-[#6B6B6B]">
-            Preparing for <span className="font-semibold text-[#171717]">{activeJob?.roleTitle || user?.targetRole || 'Full Stack Developer'}</span> at <span className="font-semibold text-[#171717]">{activeJob?.company || 'Stripe'}</span>.
+            Preparing for <span className="font-semibold text-[#171717]">{activeJob?.roleTitle || user?.targetRole || 'Full Stack Developer'}</span>
+            {activeJob?.company ? (
+              <> at <span className="font-semibold text-[#171717]">{activeJob.company}</span></>
+            ) : null}.
           </p>
         </div>
 
         <div className="flex items-center space-x-3 shrink-0">
           <button
             onClick={() => setCurrentTab('resume')}
-            className="px-4 py-2 bg-[#F8F8F6] hover:bg-white border border-[#E7E7E4] text-xs font-bold text-[#171717] rounded-xl transition-all flex items-center gap-1.5"
+            className="px-4 py-2 bg-[#F8F8F6] hover:bg-white border border-[#E7E7E4] text-xs font-bold text-[#171717] rounded-xl transition-all flex items-center gap-1.5 cursor-pointer"
           >
             <Layers className="w-4 h-4 text-[#6B6B6B]" />
-            <span>Update Resume</span>
+            <span>{activeResume ? 'Update Resume' : 'Upload Resume'}</span>
           </button>
           <button
             onClick={() => setCurrentTab('match')}
-            className="px-4 py-2 bg-[#62A7FF] hover:bg-[#4B92F0] text-white text-xs font-bold rounded-xl shadow-xs transition-all flex items-center gap-1.5"
+            className="px-4 py-2 bg-[#62A7FF] hover:bg-[#4B92F0] text-white text-xs font-bold rounded-xl shadow-xs transition-all flex items-center gap-1.5 cursor-pointer"
           >
             <span>View Skill Gaps</span>
             <ArrowRight className="w-4 h-4" />
           </button>
         </div>
       </div>
+
+      {/* Extracted Resume Intelligence & Candidate Profile Telemetry */}
+      {activeResume && (
+        <div className="bg-white border border-[#E7E7E4] rounded-2xl p-6 card-subtle space-y-6">
+          {/* Header Row */}
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-5 border-b border-[#E7E7E4]">
+            <div className="flex items-start gap-3.5">
+              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#62A7FF] to-[#2563EB] text-white flex items-center justify-center font-bold text-lg shadow-xs shrink-0">
+                {(analysis?.candidateName || user?.name || 'C').charAt(0).toUpperCase()}
+              </div>
+              <div className="space-y-1">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className="text-[10px] uppercase font-bold text-[#62A7FF] tracking-wider">
+                    Extracted Candidate Telemetry
+                  </span>
+                  <span className="text-[10px] font-bold text-[#16A34A] bg-green-50 px-2 py-0.5 rounded-full border border-green-200 flex items-center gap-1">
+                    <Check className="w-3 h-3" /> Lemma AI Verified
+                  </span>
+                  <span className="text-[10px] text-[#6B6B6B] bg-[#F8F8F6] border border-[#E7E7E4] px-2 py-0.5 rounded-md flex items-center gap-1">
+                    <FileText className="w-3 h-3 text-[#62A7FF]" />
+                    {activeResume.fileName}
+                  </span>
+                </div>
+                <h2 className="font-heading font-extrabold text-xl sm:text-2xl text-[#171717]">
+                  {analysis?.candidateName || user?.name || 'Candidate Profile'}
+                </h2>
+                <p className="text-xs text-[#6B6B6B]">
+                  Target Track: <strong className="text-[#171717]">{user?.targetRole || activeJob?.roleTitle || 'Full Stack Developer'}</strong>
+                </p>
+              </div>
+            </div>
+
+            {/* Contact Pills & Action */}
+            <div className="flex flex-wrap items-center gap-2">
+              {(analysis?.email || user?.email) && (
+                <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#F8F8F6] border border-[#E7E7E4] text-[11px] text-[#6B6B6B]">
+                  <Mail className="w-3.5 h-3.5 text-[#62A7FF]" />
+                  <span>{analysis?.email || user?.email}</span>
+                </div>
+              )}
+              {analysis?.phone && (
+                <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#F8F8F6] border border-[#E7E7E4] text-[11px] text-[#6B6B6B]">
+                  <Phone className="w-3.5 h-3.5 text-[#62A7FF]" />
+                  <span>{analysis?.phone}</span>
+                </div>
+              )}
+              {analysis?.location && (
+                <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#F8F8F6] border border-[#E7E7E4] text-[11px] text-[#6B6B6B]">
+                  <MapPin className="w-3.5 h-3.5 text-[#62A7FF]" />
+                  <span>{analysis?.location}</span>
+                </div>
+              )}
+              <button
+                onClick={() => setCurrentTab('resume')}
+                className="px-3 py-1.5 bg-[#F8F8F6] hover:bg-white border border-[#E7E7E4] text-xs font-bold text-[#171717] rounded-xl transition-all flex items-center gap-1.5 ml-auto cursor-pointer"
+              >
+                <Layers className="w-3.5 h-3.5 text-[#6B6B6B]" />
+                <span>Manage Resume</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Executive Summary */}
+          {analysis?.summary && (
+            <div className="p-4 rounded-xl bg-[#F8F8F6] border border-[#E7E7E4] space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="text-[10px] uppercase font-bold text-[#6B6B6B] tracking-wider flex items-center gap-1">
+                  <Sparkles className="w-3.5 h-3.5 text-[#62A7FF]" />
+                  Executive Professional Summary
+                </span>
+                {analysis.domains && analysis.domains.length > 0 && (
+                  <div className="flex flex-wrap gap-1">
+                    {analysis.domains.map((dom: string) => (
+                      <span key={dom} className="text-[10px] font-semibold bg-white border border-[#E7E7E4] px-2 py-0.5 rounded-full text-[#171717]">
+                        {dom}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </div>
+              <p className="text-xs sm:text-sm text-[#171717]/90 leading-relaxed">
+                {analysis.summary}
+              </p>
+            </div>
+          )}
+
+          {/* Extracted Skills Cloud */}
+          {((analysis?.skills && analysis.skills.length > 0) || (user?.verifiedSkills && user.verifiedSkills.length > 0)) && (
+            <div className="space-y-2.5">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Code2 className="w-4 h-4 text-[#62A7FF]" />
+                  <h3 className="font-heading font-bold text-sm text-[#171717]">
+                    Extracted & Verified Skills ({((analysis?.skills || user?.verifiedSkills) ?? []).length})
+                  </h3>
+                </div>
+                <span className="text-[10px] font-bold text-[#62A7FF] bg-blue-50 border border-blue-200 px-2 py-0.5 rounded-full">
+                  Resume Telemetry
+                </span>
+              </div>
+              <div className="flex flex-wrap gap-1.5">
+                {((analysis?.skills || user?.verifiedSkills) ?? []).map((skill: string) => (
+                  <span
+                    key={skill}
+                    className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold bg-white border border-[#E7E7E4] text-[#171717] hover:border-[#62A7FF] transition-colors"
+                  >
+                    <Check className="w-3 h-3 text-[#16A34A]" />
+                    {skill}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* 2-Column: Work Experience & Key Projects */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 pt-2">
+            {/* Work Experience */}
+            <div className="space-y-3">
+              <div className="flex items-center gap-2 pb-1 border-b border-[#E7E7E4]">
+                <Briefcase className="w-4 h-4 text-[#62A7FF]" />
+                <h3 className="font-heading font-bold text-sm text-[#171717]">
+                  Work Experience & History
+                </h3>
+              </div>
+              {analysis?.experience && analysis.experience.length > 0 ? (
+                <div className="space-y-3">
+                  {analysis.experience.map((exp: any, idx: number) => (
+                    <div key={idx} className="p-3.5 rounded-xl border border-[#E7E7E4] bg-[#F8F8F6] space-y-1.5">
+                      <div className="flex items-start justify-between gap-2">
+                        <div>
+                          <h4 className="font-bold text-xs text-[#171717]">{exp.title}</h4>
+                          <p className="text-[11px] font-semibold text-[#62A7FF]">{exp.company}</p>
+                        </div>
+                        {exp.duration && (
+                          <span className="text-[10px] font-medium bg-white border border-[#E7E7E4] px-2 py-0.5 rounded text-[#6B6B6B] shrink-0">
+                            {exp.duration}
+                          </span>
+                        )}
+                      </div>
+                      {exp.description && (
+                        <p className="text-[11px] text-[#6B6B6B] leading-relaxed">
+                          {exp.description}
+                        </p>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="p-4 rounded-xl border border-dashed border-[#E7E7E4] text-center text-xs text-[#6B6B6B]">
+                  Academic or early-career profile extracted.
+                </div>
+              )}
+            </div>
+
+            {/* Featured Projects */}
+            <div className="space-y-3">
+              <div className="flex items-center gap-2 pb-1 border-b border-[#E7E7E4]">
+                <FolderGit2 className="w-4 h-4 text-[#62A7FF]" />
+                <h3 className="font-heading font-bold text-sm text-[#171717]">
+                  Featured Technical Projects
+                </h3>
+              </div>
+              {analysis?.projects && analysis.projects.length > 0 ? (
+                <div className="space-y-3">
+                  {analysis.projects.map((proj: any, idx: number) => (
+                    <div key={idx} className="p-3.5 rounded-xl border border-[#E7E7E4] bg-[#F8F8F6] space-y-1.5">
+                      <div className="flex items-start justify-between gap-2">
+                        <h4 className="font-bold text-xs text-[#171717]">{proj.title}</h4>
+                      </div>
+                      {proj.technologies && proj.technologies.length > 0 && (
+                        <div className="flex flex-wrap gap-1">
+                          {proj.technologies.map((t: string) => (
+                            <span key={t} className="text-[9px] font-semibold bg-white border border-[#E7E7E4] px-1.5 py-0.5 rounded text-[#171717]">
+                              {t}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                      {proj.description && (
+                        <p className="text-[11px] text-[#6B6B6B] leading-relaxed">
+                          {proj.description}
+                        </p>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="p-4 rounded-xl border border-dashed border-[#E7E7E4] text-center text-xs text-[#6B6B6B]">
+                  No separate technical projects extracted.
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Education & Strengths / Growth Areas Row */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2 border-t border-[#E7E7E4]">
+            {/* Education */}
+            <div className="space-y-2">
+              <span className="text-[10px] uppercase font-bold text-[#6B6B6B] tracking-wider flex items-center gap-1">
+                <GraduationCap className="w-3.5 h-3.5 text-[#62A7FF]" />
+                Education
+              </span>
+              {analysis?.education && analysis.education.length > 0 ? (
+                analysis.education.map((edu: any, idx: number) => (
+                  <div key={idx} className="p-2.5 rounded-lg bg-[#F8F8F6] border border-[#E7E7E4] text-xs">
+                    <p className="font-bold text-[#171717]">{edu.degree}</p>
+                    <p className="text-[11px] text-[#6B6B6B]">{edu.institution} {edu.year ? `(${edu.year})` : ''}</p>
+                  </div>
+                ))
+              ) : (
+                <p className="text-xs text-[#6B6B6B] italic">Not specified in resume</p>
+              )}
+            </div>
+
+            {/* Strengths */}
+            <div className="space-y-2">
+              <span className="text-[10px] uppercase font-bold text-[#16A34A] tracking-wider flex items-center gap-1">
+                <Award className="w-3.5 h-3.5" />
+                Verified Strengths
+              </span>
+              {analysis?.strengths && analysis.strengths.length > 0 ? (
+                <div className="space-y-1.5">
+                  {analysis.strengths.map((s: string, idx: number) => (
+                    <div key={idx} className="flex items-center gap-1.5 text-xs text-green-950 bg-green-50/70 border border-green-200/80 px-2.5 py-1 rounded-lg">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-[#16A34A] shrink-0" />
+                      <span>{s}</span>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-xs text-[#6B6B6B] italic">Extracted from code & architecture proficiency</p>
+              )}
+            </div>
+
+            {/* Growth Areas */}
+            <div className="space-y-2">
+              <span className="text-[10px] uppercase font-bold text-[#62A7FF] tracking-wider flex items-center gap-1">
+                <Target className="w-3.5 h-3.5" />
+                Target Growth Areas
+              </span>
+              {analysis?.growthAreas && analysis.growthAreas.length > 0 ? (
+                <div className="space-y-1.5">
+                  {analysis.growthAreas.map((g: string, idx: number) => (
+                    <div key={idx} className="flex items-center gap-1.5 text-xs text-blue-950 bg-blue-50/70 border border-blue-200/80 px-2.5 py-1 rounded-lg">
+                      <ChevronRight className="w-3.5 h-3.5 text-[#62A7FF] shrink-0" />
+                      <span>{g}</span>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-xs text-[#6B6B6B] italic">Identified from target job requirements</p>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Zero State if No Resume Uploaded Yet */}
+      {!activeResume && (
+        <div className="bg-gradient-to-br from-white to-[#F8F8F6] border-2 border-dashed border-[#62A7FF]/40 rounded-2xl p-8 text-center space-y-4 card-subtle">
+          <div className="w-14 h-14 mx-auto rounded-2xl bg-[#62A7FF]/10 text-[#62A7FF] flex items-center justify-center">
+            <UploadCloud className="w-7 h-7" />
+          </div>
+          <div className="space-y-1 max-w-lg mx-auto">
+            <h3 className="font-heading font-extrabold text-xl text-[#171717]">
+              Upload Your Resume to Unlock Career Intelligence
+            </h3>
+            <p className="text-xs sm:text-sm text-[#6B6B6B]">
+              Upload your resume to extract candidate telemetry, verify skills, calculate target job readiness scores, and generate your custom career plan.
+            </p>
+          </div>
+          <button
+            onClick={() => setCurrentTab('resume')}
+            className="px-6 py-2.5 bg-[#62A7FF] hover:bg-[#4B92F0] text-white text-xs font-bold rounded-xl shadow-xs transition-all inline-flex items-center gap-2 cursor-pointer"
+          >
+            <span>Upload Resume Now</span>
+            <ArrowRight className="w-4 h-4" />
+          </button>
+        </div>
+      )}
 
       {/* Signature Career Journey Bar (PRD Section 43) */}
       <JourneyBar currentStage="match" onStageClick={(tab) => setCurrentTab(tab)} />

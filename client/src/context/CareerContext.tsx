@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { JobRecord, MatchRecord, CareerPlanRecord, ResumeRecord, UserQuota, PlanTier } from '../types';
 import { api } from '../services/api';
+import { useAuth } from './AuthContext';
 import confetti from 'canvas-confetti';
 
 interface CareerContextType {
@@ -35,13 +36,14 @@ interface CareerContextType {
 const CareerContext = createContext<CareerContextType | undefined>(undefined);
 
 export const CareerProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const { user } = useAuth();
   const [activeJob, setActiveJob] = useState<JobRecord | null>(null);
   const [activeResume, setActiveResume] = useState<ResumeRecord | null>(null);
   const [allJobs, setAllJobs] = useState<JobRecord[]>([]);
   const [allResumes, setAllResumes] = useState<ResumeRecord[]>([]);
   const [activeMatch, setActiveMatch] = useState<MatchRecord | null>(null);
   const [careerPlan, setCareerPlan] = useState<CareerPlanRecord | null>(null);
-  const [readinessScore, setReadinessScore] = useState<number>(78);
+  const [readinessScore, setReadinessScore] = useState<number>(0);
   const [loading, setLoading] = useState(true);
   const [quota, setQuota] = useState<UserQuota | null>(null);
   const [plan, setPlan] = useState<PlanTier>('pro');
@@ -68,29 +70,42 @@ export const CareerProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         api.resume.getResumes(),
       ]);
 
-      setAllJobs(jobsList || []);
-      setAllResumes(resumesList || []);
+      const validResumes = resumesList || [];
+      const validJobs = jobsList || [];
 
-      if (resumesList && resumesList.length > 0) {
+      setAllJobs(validJobs);
+      setAllResumes(validResumes);
+
+      if (validResumes.length > 0) {
         const me = await api.auth.getMe().catch(() => null);
         const preferredId = me?.user?.activeResumeId;
         const picked =
-          (preferredId && resumesList.find((r) => r.id === preferredId)) || resumesList[0];
+          (preferredId && validResumes.find((r) => r.id === preferredId)) || validResumes[0];
         setActiveResume(picked);
+      } else {
+        setActiveResume(null);
       }
 
-      if (matchRes.match) {
+      if (matchRes?.match) {
         setActiveMatch(matchRes.match);
-        setReadinessScore(matchRes.match.matchScore || 78);
+        setReadinessScore(matchRes.match.matchScore || 0);
+      } else {
+        setActiveMatch(null);
+        setReadinessScore(0);
       }
-      if (matchRes.job) {
+
+      if (matchRes?.job) {
         setActiveJob(matchRes.job);
-      } else if (jobsList && jobsList.length > 0) {
-        setActiveJob(jobsList[0]);
+      } else if (validJobs.length > 0) {
+        setActiveJob(validJobs[0]);
+      } else {
+        setActiveJob(null);
       }
 
       if (planRes && planRes.id) {
         setCareerPlan(planRes);
+      } else {
+        setCareerPlan(null);
       }
 
       await refreshQuota();
@@ -103,7 +118,7 @@ export const CareerProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
   useEffect(() => {
     refreshCareer();
-  }, []);
+  }, [user?.id]);
 
   const switchTier = async (newTier: PlanTier) => {
     try {
